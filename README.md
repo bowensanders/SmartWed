@@ -5,7 +5,10 @@ The Smart Marriage Project is built on the awesome work that Jordi did for my wi
 
 1. Contains the names of the partners in the relationship
 2. Contains a short field for vows
-3. Has a simple guestbook that allows for donation 
+3. Creating milestones for significant events in the relationship such as child or divorce
+4. Contains a URL for IPFS hash or other resource for wedding photo
+5. Has a simple guestbook that allows for donation 
+
 
 Right now the only way to interact with the contract is the hard way, using MyEtherWallet to send messages and donations to it, and etherscan.io to view the contract contents.
 
