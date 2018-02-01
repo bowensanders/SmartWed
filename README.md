@@ -9,7 +9,6 @@ The Smart Marriage Project is built on the awesome work that Jordi did for my wi
 4. Contains a URL for IPFS hash or other resource for wedding photo
 5. Has a simple guestbook that allows for donation 
 
-
 Right now the only way to interact with the contract is the hard way, using MyEtherWallet to send messages and donations to it, and etherscan.io to view the contract contents.
 
 The aim is to make an easy-to-use web interface for the contract that would allow any user to be able to leave messages in the guestbook, donate, or read the contract and guestbook easily, preferably with metamask integration.
