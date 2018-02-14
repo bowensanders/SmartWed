@@ -47,6 +47,14 @@
                 document.write('[<a href="http://etherscan.io/address/' + account + '">' + account + '</a>]<br><br>')
                 document.write(balance + ' Ether');
             }
+            // unix timestamp conversion
+            function timeconvert() {
+                var timestamp = currentMessage[0];
+                var date = new Date(timestamp * 1000);
+                var formattedDate = ('0' + date.getDate()).slice(-2) + '/' + ('0' + (date.getMonth() + 1)).slice(-2) + '/' + date.getFullYear() + ' ' + ('0' + date.getHours()).slice(-2) + ':' + ('0' + date.getMinutes()).slice(-2);
+                document.write(formattedDate);
+            }
+
 
             // simple loop to read out guestbook messages
             function guestbook() {
@@ -54,7 +62,10 @@
                 for (var i = 0, max = numMsg; i < max; i++)
                 {
                     var currentMessage = myContractInstance .messages(i);
-                    document.write('Msg #' + i + ' From: ' + currentMessage[1] + '<br>Message: ' + currentMessage[2] +'<br> URL: <a href="' + currentMessage[3] + '" target="new">' + currentMessage[3] +'</a><br>');
+                    var timestamp = currentMessage[0];
+                    var date = new Date(timestamp * 1000);
+                    var formattedDate = ('0' + date.getDate()).slice(-2) + '/' + ('0' + (date.getMonth() + 1)).slice(-2) + '/' + date.getFullYear() + ' ' + ('0' + date.getHours()).slice(-2) + ':' + ('0' + date.getMinutes()).slice(-2);
+                    document.write('Date: ' + formattedDate + ' From: ' + currentMessage[1] + '<br>Message: ' + currentMessage[2] +'<br> URL: <a href="' + currentMessage[3] + '" target="new">' + currentMessage[3] +'</a><br>');
                     if (currentMessage[4] != 0) {
                         document.write('Donation: ' + currentMessage[4] + ' Wei <br>');
                     }
