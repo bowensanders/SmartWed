@@ -1,0 +1,125 @@
+<html lang="en">
+    <head>
+        <title>ETHMarriage</title>
+
+        <meta name="keywords" content="" />
+        <meta name="description" content="" />
+        <link href="http://fonts.googleapis.com/css?family=Varela" rel="stylesheet" />
+        <link href="default.css" rel="stylesheet" type="text/css" media="all" />
+        <link href="fonts.css" rel="stylesheet" type="text/css" media="all" />
+
+        <script src="https://cdn.rawgit.com/ethereum/web3.js/develop/dist/web3.js"></script>
+        <script>
+            // connect direct to infura - needs to change to metamask when guestbook entry is created
+            web3 = new Web3(new Web3.providers.HttpProvider("https://mainnet.infura.io/ySFxqrROS2e1chccEsyS")); 
+            
+            // contract ABI set
+            var MyContract = web3.eth.contract([{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"messages","outputs":[{"name":"date","type":"uint256"},{"name":"nameFrom","type":"string"},{"name":"text","type":"string"},{"name":"url","type":"string"},{"name":"value","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"nameFrom","type":"string"},{"name":"text","type":"string"},{"name":"url","type":"string"}],"name":"sendMessage","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"constant":true,"inputs":[],"name":"marriageDate","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"majorEvents","outputs":[{"name":"date","type":"uint256"},{"name":"name","type":"string"},{"name":"description","type":"string"},{"name":"url","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"name","type":"string"},{"name":"description","type":"string"},{"name":"url","type":"string"}],"name":"setMajorEvent","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"acceptOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"partner2","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"partner1","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_newOwner","type":"address"}],"name":"changeOwner","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_dst","type":"address"},{"name":"_value","type":"uint256"},{"name":"_data","type":"bytes"}],"name":"execute","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"status","type":"string"},{"name":"url","type":"string"}],"name":"setStatus","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"vows","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"marriageStatus","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"newOwner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"numberOfMajorEvents","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_partner1","type":"string"},{"name":"_partner2","type":"string"},{"name":"_vows","type":"string"},{"name":"url","type":"string"}],"name":"createMarriage","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"numberOfMessages","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[{"name":"_owner","type":"address"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"name","type":"string"},{"indexed":false,"name":"description","type":"string"},{"indexed":false,"name":"url","type":"string"}],"name":"MajorEvent","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"name","type":"string"},{"indexed":false,"name":"description","type":"string"},{"indexed":false,"name":"url","type":"string"},{"indexed":false,"name":"value","type":"uint256"}],"name":"MessageSent","type":"event"}]);
+            // contract addresses are hardcoded for now, uncomment one
+            // hax & luker contract address
+            var myContractInstance = MyContract.at("0xd09B6E3C8FB7E05e248197EC45c38cD338d66C1a");
+            
+            // garrett & stephanie contract address
+            //var myContractInstance = MyContract.at("0x958a8f594101d2c0485a52319f29b2647f2ebc06");
+
+            // gather values for partner1, partner2, vows, owner
+            var partner1 = myContractInstance .partner1.call();
+            var partner2 = myContractInstance .partner2.call();
+            var vows = myContractInstance .vows.call();
+            var owner = myContractInstance .owner.call();
+
+            // printAccountBalance() from infura tutorial
+            function printAccountBalance() {
+                var GET = {};
+                var query = window.location.search.substring(1).split("&");
+                for (var i = 0, max = query.length; i < max; i++)
+                {
+                    if (query[i] === "") //check for trailing & with no param
+                        continue;
+                    var param = query[i].split("=");
+                    GET[decodeURIComponent(param[0])] = decodeURIComponent(param[1] || "");
+                }
+                var account = myContractInstance .owner.call();
+
+                var balanceWei = web3.eth.getBalance(account).toNumber();
+                var balance = web3.fromWei(balanceWei, 'ether');
+
+                document.write('[<a href="http://etherscan.io/address/' + account + '">' + account + '</a>]<br><br>')
+                document.write(balance + ' Ether');
+            }
+            
+
+
+        </script>
+    </head>
+
+    <body>
+            
+        <div id="wrapper">
+            <!-- Nav Section -->
+            <div id="header-wrapper">
+                <div id="header" class="container">
+                    <div id="logo">
+                        <h1><a href="#"><img src="ethmarriage-logo.png" height="40" width="40" align="top"> ETHMarriage</a></h1>
+                    </div>
+                    <div id="menu">
+                        <ul>
+                            <li class="current_page_item"><a href="#" accesskey="1" title="">Homepage</a></li>
+                            <li><a href="https://wallet.gnosis.pm" accesskey="2" title="" target="new">Access Multisig</a></li>
+                            <li><a href="#" accesskey="3" title="">About Us</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div> 
+
+            <!-- Header and Names and Vows section -->  
+            <div id="banner">
+                <div class="container">
+                    <div class="title">
+                        <h2>The Wedding Contract of<br><script>document.write(partner1 + " and <br>" + partner2);</script></h2>
+                        <span class="byline"><br><script>document.write(vows);</script></span>
+                    </div>
+                </div>
+            </div>
+
+            
+            <!-- Multisig Account Balance Section -->
+            <div id="page" class="container">
+                    <div class="title">
+                        <h2>Multisig Account Balance:</h2>
+                        <span class="byline"><script>printAccountBalance();</script></span> 
+                    </div>
+                    <p> Vivamus fermentum nibh in augue. Praesent a lacus at urna congue rutrum. Nulla enim eros nibh. Duis enim nulla, luctus eu, dapibus lacinia, venenatis id, quam. Vestibulum imperdiet, magna nec eleifend rutrum, nunc lectus vestibulum velit, euismod lacinia quam nisl id lorem. Quisque erat. Vestibulum pellentesque, justo mollis pretium suscipit, justo nulla blandit libero, in blandit augue justo quis nisl. Fusce mattis viverra elit. Fusce quis tortor.</p>
+                    
+            </div>
+
+            <!-- Guestbook Section -->
+            <div id="featured">
+                <div class="container">
+                    <div class="title">
+                        <h2>Wedding Guestbook</h2>
+                        <span class="byline">
+                             Here are the messages left in the guestbook:
+                    </div>
+                        <p>bacon ipsum</p>
+                </div>
+                    <ul class="actions">
+                        <li><a href="#" class="button">Etiam posuere</a></li>
+                    </ul>
+            </div>
+
+
+            <div id="footer">
+                <div class="container">
+                    <div class="title">
+                        <p>Theme based on <strong>PlainDisplay</strong>, a free, fully standards-compliant CSS template designed by <a href="http://templated.co" rel="nofollow">TEMPLATED</a>. </p>
+                    </div>
+                </div>
+            </div>
+            
+            <form method=GET action="index.html">
+                Enter an account: <input type="text" size=50 name=account><input type="submit">
+            </form>
+        </p>
+    </body>
+</html>
