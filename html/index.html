@@ -47,10 +47,19 @@
                 document.write('[<a href="http://etherscan.io/address/' + account + '">' + account + '</a>]<br><br>')
                 document.write(balance + ' Ether');
             }
-            
 
-
+            // simple loop to read out guestbook messages
+            function guestbook() {
+                var numMsg = myContractInstance .numberOfMessages.call();
+                for (var i = 0, max = numMsg; i < max; i++)
+                {
+                    var currentMessage = myContractInstance .messages(i);
+                    document.write('Msg #' + i + ' ' + currentMessage + '<br><br>');
+                }
+            }
         </script>
+
+
     </head>
 
     <body>
@@ -101,7 +110,9 @@
                         <span class="byline">
                              Here are the messages left in the guestbook:
                     </div>
-                        <p>bacon ipsum</p>
+                        <p>
+                            <script>guestbook();</script>
+                        </p>
                 </div>
                     <ul class="actions">
                         <li><a href="#" class="button">Etiam posuere</a></li>
