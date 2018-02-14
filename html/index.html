@@ -54,7 +54,11 @@
                 for (var i = 0, max = numMsg; i < max; i++)
                 {
                     var currentMessage = myContractInstance .messages(i);
-                    document.write('Msg #' + i + ' ' + currentMessage + '<br><br>');
+                    document.write('Msg #' + i + ' From: ' + currentMessage[1] + '<br>Message: ' + currentMessage[2] +'<br> URL: <a href="' + currentMessage[3] + '" target="new">' + currentMessage[3] +'</a><br>');
+                    if (currentMessage[4] != 0) {
+                        document.write('Donation: ' + currentMessage[4] + ' Wei <br>');
+                    }
+                    document.write('<br>');
                 }
             }
         </script>
