@@ -33,6 +33,7 @@
             var partner2 = myContractInstance .partner2.call();
             var vows = myContractInstance .vows.call();
             var owner = myContractInstance .owner.call();
+            var marriageDate = myContractInstance .marriageDate.call();
 
             // printAccountBalance() from infura tutorial
             function printAccountBalance() {
@@ -105,6 +106,9 @@
                     <div class="title">
                         <h2>The Marriage Contract of<br><script>document.write(partner1 + " and <br>" + partner2);</script></h2>
                         <span class="byline"><br><script>document.write(vows);</script></span>
+                        <!-- incept date temporary usage of contract marriageDate until etherscan API data can be parsed -->
+                        <p>Incept Date: <script>document.write(moment(marriageDate,"X").format("DD MMM YYYY, h:mma"));</script>
+                        </p>
                     </div>
                 </div>
             </div>
