@@ -8,13 +8,19 @@
         <link href="default.css" rel="stylesheet" type="text/css" media="all" />
         <link href="fonts.css" rel="stylesheet" type="text/css" media="all" />
 
+        <!-- include web3.js for blockchain interaction-->
         <script src="https://cdn.rawgit.com/ethereum/web3.js/develop/dist/web3.js"></script>
+
+        <!-- include moment - consider making a copy of this into the repo -->
+        <script src="https://momentjs.com/downloads/moment.min.js"></script>
+        
         <script>
             // connect direct to infura - needs to change to metamask when guestbook entry is created
             web3 = new Web3(new Web3.providers.HttpProvider("https://mainnet.infura.io/ySFxqrROS2e1chccEsyS")); 
             
             // contract ABI set
             var MyContract = web3.eth.contract([{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"messages","outputs":[{"name":"date","type":"uint256"},{"name":"nameFrom","type":"string"},{"name":"text","type":"string"},{"name":"url","type":"string"},{"name":"value","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"nameFrom","type":"string"},{"name":"text","type":"string"},{"name":"url","type":"string"}],"name":"sendMessage","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"constant":true,"inputs":[],"name":"marriageDate","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"majorEvents","outputs":[{"name":"date","type":"uint256"},{"name":"name","type":"string"},{"name":"description","type":"string"},{"name":"url","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"name","type":"string"},{"name":"description","type":"string"},{"name":"url","type":"string"}],"name":"setMajorEvent","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"acceptOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"partner2","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"partner1","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_newOwner","type":"address"}],"name":"changeOwner","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_dst","type":"address"},{"name":"_value","type":"uint256"},{"name":"_data","type":"bytes"}],"name":"execute","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"status","type":"string"},{"name":"url","type":"string"}],"name":"setStatus","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"vows","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"marriageStatus","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"newOwner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"numberOfMajorEvents","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_partner1","type":"string"},{"name":"_partner2","type":"string"},{"name":"_vows","type":"string"},{"name":"url","type":"string"}],"name":"createMarriage","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"numberOfMessages","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[{"name":"_owner","type":"address"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"name","type":"string"},{"indexed":false,"name":"description","type":"string"},{"indexed":false,"name":"url","type":"string"}],"name":"MajorEvent","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"name","type":"string"},{"indexed":false,"name":"description","type":"string"},{"indexed":false,"name":"url","type":"string"},{"indexed":false,"name":"value","type":"uint256"}],"name":"MessageSent","type":"event"}]);
+            
             // contract addresses are hardcoded for now, uncomment one
             // hax & luker contract address
             var myContractInstance = MyContract.at("0xd09B6E3C8FB7E05e248197EC45c38cD338d66C1a");
@@ -58,12 +64,11 @@
                     // make currentMessage[] single line array for current message
                     var currentMessage = myContractInstance .messages(i);
                     // date formatting 
-                    var timestamp = currentMessage[0];
-                    var date = new Date(timestamp * 1000);
-                    var formattedDate = ('0' + date.getDate()).slice(-2) + '/' + ('0' + (date.getMonth() + 1)).slice(-2) + '/' + date.getFullYear() + ' ' + ('0' + date.getHours()).slice(-2) + ':' + ('0' + date.getMinutes()).slice(-2);
+                    var formattedDate = moment(currentMessage[0],"X").format("DD MMM YYYY, h:mma");
                     // display the message properly
                     // currentMessage[0] is date, [1] is fromName, [2] is message, [3] is url, [4] is donation value in wei
-                    document.write('Date: ' + formattedDate + ' From: ' + currentMessage[1] + '<br>Message: ' + currentMessage[2] +'<br> URL: <a href="' + currentMessage[3] + '" target="new">' + currentMessage[3] +'</a><br>');
+                    
+                    document.write(' From: ' + currentMessage[1] + ' - ' + formattedDate + '<br>Message: ' + currentMessage[2] +'<br> URL: <a href="' + currentMessage[3] + '" target="new">' + currentMessage[3] +'</a><br>');
                     if (currentMessage[4] != 0) {
                         document.write('Donation: ' + currentMessage[4] + ' Wei <br>');
                     }
