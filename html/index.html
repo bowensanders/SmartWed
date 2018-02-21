@@ -94,7 +94,7 @@
                         <ul>
                             <li class="current_page_item"><a href="#" accesskey="1" title="">Homepage</a></li>
                             <li><a href="https://wallet.gnosis.pm" accesskey="2" title="" target="new">Access Multisig</a></li>
-                            <li><a href="#" accesskey="3" title="">About Us</a></li>
+                            <li><a href="#" accesskey="3" title="">Sign Guestbook</a></li>
                         </ul>
                     </div>
                 </div>
@@ -104,7 +104,9 @@
             <div id="banner">
                 <div class="container">
                     <div class="title">
+                        <!-- scriptlet to show partner1 and partner2 -->
                         <h2>The Marriage Contract of<br><script>document.write(partner1 + " and <br>" + partner2);</script></h2>
+                        <!-- scriptlet to show vows -->
                         <span class="byline"><br><script>document.write(vows);</script></span>
                         <!-- incept date temporary usage of contract marriageDate until etherscan API data can be parsed -->
                         <p>Incept Date: <script>document.write(moment(marriageDate,"X").format("DD MMM YYYY, h:mma"));</script>
@@ -118,7 +120,10 @@
             <div id="page" class="container">
                     <div class="title">
                         <h2>Multisig Account Balance:</h2>
-                        <span class="byline"><script>printAccountBalance();</script></span> 
+                        <span class="byline">
+                            <!-- printAccountBalance() gets from myContractInstance.owner address -->
+                            <script>printAccountBalance();</script>
+                        </span> 
                     </div>                    
             </div>
 
@@ -131,6 +136,7 @@
                              Here are the messages left in the guestbook:
                     </div>
                         <p>
+                            <!-- call guestbook function to read out all messages in guestbook -->
                             <script>guestbook();</script>
                         </p>
                 </div>
@@ -144,6 +150,7 @@
                 <div class="container">
                     <div class="title">
                         <p>This is a <a href="https://giveth.io" target="new">Giveth</a> Social Coding Project, Interface by <a href="https://github.com/bowensanders/" target="new">Bowen Sanders</a>.<br>The first instance of this Smart Marriage contract was coded by <a href="https://github.com/jbaylina" target="new">Jordi Baylina</a> and  
+                            <!-- this creates a link to the contract being examined from the myContractInstance array -->
                             <script>document.write('<a href="https://etherscan.io/address/' + myContractInstance.address +'" target="new">');</script>deployed to the Ethereum Blockchain</a> at Burning Man 2017. <br>The contract was based on the first Ethereum Marriage Contract by <a href="https://github.com/Souptacular" target="new">Hudson Jameson</a>.<br>Theme based on <strong>PlainDisplay</strong>, a free, fully standards-compliant CSS template designed by <a href="http://templated.co" rel="nofollow">TEMPLATED</a>. </p>
                     </div>
                 </div>
