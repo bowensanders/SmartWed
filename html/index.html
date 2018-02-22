@@ -110,10 +110,13 @@
                 $('#lblVows').html(vows);
             }
 
-
+            function printMultisigUrl() {
+                var multisigUrl = '<a href="http://etherscan.io/address/' + owner + '/" target="new">' + owner + '</a>';
+                $('#lblMultisigUrl').html(multisigUrl);
+            }
             function printMultisigBalance() {
                 var acctBalance = getAccountBalance();
-                $('#printAcctBal').html(acctBalance);
+                $('#lblPrintAcctBal').html(acctBalance);
             }
 
             function bodyOnLoad() {
@@ -121,6 +124,7 @@
                 connectionInit();
                 etherscanAPIParse();
                 loadPartners();
+                printMultisigUrl();
                 printMultisigBalance();
                 guestbook();
                 // Put the second function here
@@ -189,8 +193,8 @@
                     <div class="title">
                         <h2>Multisig Account Balance:</h2>
                         <span class="byline">
-                            <!-- print multisig address here -->
-                            <label id="printAcctBal"></label> ETH
+                            <label id="lblMultisigUrl"></label><br>
+                            <label id="lblPrintAcctBal"></label> ETH
                         </span> 
                     </div>                    
             </div>
