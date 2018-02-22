@@ -93,7 +93,8 @@
                     
                     htmlContent += ' From: ' + currentMessage[1] + ' - ' + formattedDate + '<br>Message: ' + currentMessage[2] +'<br> URL: <a href="' + currentMessage[3] + '" target="new">' + currentMessage[3] +'</a><br>';
                     if (currentMessage[4] != 0) {
-                        htmlContent += 'Donation: ' + currentMessage[4] + ' Wei <br>';
+                        var donationBalance = web3.fromWei(currentMessage[4]);
+                        htmlContent += 'Donation: ' + donationBalance + ' ETH <br>';
                     }
                     htmlContent +=('<br>');
 
