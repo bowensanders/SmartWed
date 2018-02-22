@@ -134,8 +134,8 @@
             function etherscanAPIParse() {
                 var address2 = '0xd09B6E3C8FB7E05e248197EC45c38cD338d66C1a';
                 $.getJSON('http://api.etherscan.io/api?module=account&action=txlist&address=' + address2 + '&sort=asc&page=1&offset=1&apikey=8VII5WKFAB7FXWFUGI9HAMK6Z6DMYXAZNJ', function(data) {    
-                    var inceptDate = moment(data.result[0].timeStamp,"X").format("DD MMM YYYY, h:mma");
-                    var contractAcceptDate = moment(marriageDate,"X").format("DD MMM YYYY, h:mma");
+                    var inceptDate = moment(data.result[0].timeStamp,"X").format("DD MMM YYYY");
+                    var contractAcceptDate = moment(marriageDate,"X").format("DD MMM YYYY");
                     var confs = data.result[0].confirmations;
 
                         $("#lblConfs").html(confs);
@@ -179,9 +179,9 @@
                         <span class="byline"><br><label id="lblVows"></label></span>
                         <!-- incept date temporary usage of contract marriageDate until etherscan API data can be parsed -->
                         <p><br />
-                            Wedding Date: <label id="lblInceptText"></label><br />    
-                            Contract Accepted: <label id="lblContractAcceptDate"></label><br />
-                            Marriage Validity Confirmed: <label id="lblConfs"></label> times
+                            Wedding Date - <label id="lblInceptText"></label><br />    
+                            Contract Finalized - <label id="lblContractAcceptDate"></label><br />
+                            Marriage Validity Confirmed <label id="lblConfs"></label> Times.
                         </p>
                     </div>
                 </div>
