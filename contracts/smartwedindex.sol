@@ -1,8 +1,8 @@
 pragma solidity ^0.4.16;
 
 /// @author Bowen Sanders
-/// sections built on the work of Jordi Baylina (0wned, data structure)
-/// smartwedindex.sol contains a simple index of contract address, couple name, actual marriage date, bool displayValues to
+/// sections built on the work of Jordi Baylina (Owned, data structure)
+/// smartwedindex.sol contains a simple index of contract address, couple name, actual marriage date, displaymultisigValues to
 /// be used to create an array of all SmartWed contracts that are deployed 
 /// contract 0wned is licesned under GNU-3
 
