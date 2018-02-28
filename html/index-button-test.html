@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<link href="http://fonts.googleapis.com/css?family=Varela" rel="stylesheet" />
+        <link href="default.css" rel="stylesheet" type="text/css" media="all" />
+        <link href="fonts.css" rel="stylesheet" type="text/css" media="all" />
+        <link href="buttonstyle.css" rel="stylesheet" type="text/css" media="all" />
+
+        <!-- include web3.js for blockchain interaction-->
+        <script src="https://cdn.rawgit.com/ethereum/web3.js/develop/dist/web3.js"></script>
+
+        <!-- include moment - consider making a copy of this into the repo -->
+        <script src="https://momentjs.com/downloads/moment.min.js"></script>
+
+        <!-- include jQuery - because it looks easier than jumping into angular or react quite yet -->
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+
+<script>
+ 
+    
+    var MyContract;
+    var myContractInstance;
+    var numEntries;
+    var htmlContent;
+    var numIndex;
+
+    var IfaceAddress;
+    IfaceAddress = 'file:///Users/hax/Documents/Solidity%20Projects/marriage%20interface/index.html';
+            
+    function getQueryVariable(variable) {
+        var query = window.location.search.substring(1);
+        var vars = query.split('&');
+        for (var i=0; i<vars.length; i++) {
+            var pair = vars[i].split('=');
+            if (decodeURIComponent(pair[0]) == variable) {
+                return decodeURIComponent(pair[1]);
+            }
+        }
+    }   
+            
+
+    function indexInit() {
+        // connect direct to infura - needs to change to metamask when guestbook entry is created
+        web3 = new Web3(new Web3.providers.HttpProvider("https://mainnet.infura.io/ySFxqrROS2e1chccEsyS")); 
+        
+        // contract ABI set
+        MyContract = web3.eth.contract([{"constant":true,"inputs":[],"name":"numberOfIndex","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"indexdate","type":"uint256"},{"name":"wedaddress","type":"string"},{"name":"partnernames","type":"string"},{"name":"weddingdate","type":"uint256"},{"name":"displaymultisig","type":"uint256"}],"name":"writeIndex","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"partnernames","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"wedaddress","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"indexdate","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"acceptOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_newOwner","type":"address"}],"name":"changeOwner","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"indexarray","outputs":[{"name":"indexdate","type":"uint256"},{"name":"wedaddress","type":"string"},{"name":"partnernames","type":"string"},{"name":"weddingdate","type":"uint256"},{"name":"displaymultisig","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_dst","type":"address"},{"name":"_value","type":"uint256"},{"name":"_data","type":"bytes"}],"name":"execute","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"weddingdate","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"displaymultisig","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"newOwner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"anonymous":false,"inputs":[{"indexed":false,"name":"time","type":"uint256"},{"indexed":false,"name":"contractaddress","type":"string"},{"indexed":false,"name":"partners","type":"string"},{"indexed":false,"name":"weddingdate","type":"uint256"},{"indexed":false,"name":"display","type":"uint256"}],"name":"IndexWritten","type":"event"}]);
+        
+        // smartwedindex address
+        var myContractInstance = MyContract.at("0x84D9EC85C9C568eB332b7226a8f826D897e0a4a8");
+
+        numIndex = myContractInstance.numberOfIndex.call();
+        
+        // alert(getQueryVariable('smartwedaddress'));
+        // alert(myContractInstance.indexarray(1));
+    
+        // determine the number of messages for loop
+        // var numEntries = myContractInstance.numberOfIndex.call();
+        // var htmlContent = "";
+        var htmlContent2 = "";
+        // loop thru each message until finished
+        for (var i = 0, max = numIndex; i < max; i++)
+        {
+            // make currentMessage[] single line array for current message
+            var currentIndex = myContractInstance.indexarray(i);
+            // date formatting 
+            var formattedWedDate = moment(currentIndex[3],"X").format("DD MMM YYYY, h:mma");
+       
+            // htmlContent += ' address: ' + currentIndex[1] + ' - couple: ' + currentIndex[2] + ' - wedding date: ' + formattedWedDate + ' <br>';
+            
+            htmlContent2 += '<a href="' + IfaceAddress + '?smartWedAddress=' + currentIndex[1] + '&indexWedDate=' + currentIndex[3] + '">' + currentIndex[2] + '</a>';
+        
+            
+            htmlContent +=('<br>');
+           
+        }
+        // $("#indexOut").html(htmlContent);
+        $("#buttonIndex").html(htmlContent2);
+    }
+    /* When the user clicks on the button, 
+    toggle between hiding and showing the dropdown content */
+    function myFunction() {
+        document.getElementById("myDropdown").classList.toggle("show");
+    }
+    
+    // Close the dropdown if the user clicks outside of it
+    window.onclick = function(event) {
+      if (!event.target.matches('.dropbtn')) {
+    
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+        var i;
+        for (i = 0; i < dropdowns.length; i++) {
+          var openDropdown = dropdowns[i];
+          if (openDropdown.classList.contains('show')) {
+            openDropdown.classList.remove('show');
+          }
+        }
+      }
+    }
+</script>
+
+
+</head>
+<body onload="indexInit()">
+
+<div class="dropdown">
+<button onclick="myFunction()" class="dropbtn">Choose SmartWed Contract</button>
+  <div id="myDropdown" class="dropdown-content">
+    <div id="buttonIndex"></div>
+  </div>
+</div>
+
+<div id="indexOut"></div>
+
+
+
+</body>
+</html>
