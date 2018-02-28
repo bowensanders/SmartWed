@@ -1,12 +1,12 @@
 <html lang="en">
     <head>
-        <title>ETHMarriage</title>
+        <title>SmartWed</title>
 
         <meta name="keywords" content="" />
         <meta name="description" content="" />
-        <link href="http://fonts.googleapis.com/css?family=Varela" rel="stylesheet" />
-        <link href="default.css" rel="stylesheet" type="text/css" media="all" />
-        <link href="fonts.css" rel="stylesheet" type="text/css" media="all" />
+        <link href="https://fonts.googleapis.com/css?family=Varela" rel="stylesheet" />
+        <link href="./default.css" rel="stylesheet" type="text/css" media="all" />
+        <link href="./fonts.css" rel="stylesheet" type="text/css" media="all" />
         
         
         <!-- include web3.js for blockchain interaction-->
@@ -154,7 +154,7 @@
             }
 
             function printMultisigUrl() {
-                var multisigUrl = '<a href="http://etherscan.io/address/' + owner + '/" target="new">' + owner + '</a>';
+                var multisigUrl = '<a href="https://etherscan.io/address/' + owner + '/" target="new">' + owner + '</a>';
                 $('#lblMultisigUrl').html(multisigUrl);
             }
             function printMultisigBalance() {
@@ -179,7 +179,7 @@
             // code to parse data from etherscan api for first transaction datestamp (wedding date) and confirmations
             function etherscanAPIParse() {
                 var address2 = '0xd09B6E3C8FB7E05e248197EC45c38cD338d66C1a';
-                $.getJSON('http://api.etherscan.io/api?module=account&action=txlist&address=' + address2 + '&sort=asc&page=1&offset=1&apikey=8VII5WKFAB7FXWFUGI9HAMK6Z6DMYXAZNJ', function(data) {    
+                $.getJSON('https://api.etherscan.io/api?module=account&action=txlist&address=' + address2 + '&sort=asc&page=1&offset=1&apikey=8VII5WKFAB7FXWFUGI9HAMK6Z6DMYXAZNJ', function(data) {    
                     var inceptDate = moment(data.result[0].timeStamp,"X").format("DD MMM YYYY");
                     var contractAcceptDate = moment(marriageDate,"X").format("DD MMM YYYY");
                     var confs = data.result[0].confirmations;
@@ -217,7 +217,7 @@
                             <!--
                             <li><a href="#" accesskey="3" title="">Sign Guestbook</a></li>
                             -->
-                            <li><a href="file:///Users/hax/Documents/Solidity%20Projects/marriage%20interface/index-button-test.html">Choose Contract</a>
+                            <li><a href="index-button-test.html">Choose Contract</a>
                             </li>
                         </ul>
                     </div>
