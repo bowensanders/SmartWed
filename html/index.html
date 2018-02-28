@@ -7,7 +7,8 @@
         <link href="http://fonts.googleapis.com/css?family=Varela" rel="stylesheet" />
         <link href="default.css" rel="stylesheet" type="text/css" media="all" />
         <link href="fonts.css" rel="stylesheet" type="text/css" media="all" />
-
+        
+        
         <!-- include web3.js for blockchain interaction-->
         <script src="https://cdn.rawgit.com/ethereum/web3.js/develop/dist/web3.js"></script>
 
@@ -19,14 +20,55 @@
 
         
         <script>
+            // intialize vars to go between functions
             var MyContract;
             var myContractInstance;
-
             var partner1;
             var partner2;
             var vows;
             var owner;
             var marriageDate;
+            var smartWedContAddr;
+            var indexWeddingDate;
+            
+            // function to parse variables from URL
+            function getQueryVariable(variable) {
+                var query = window.location.search.substring(1);
+                var vars = query.split('&');
+                for (var i=0; i<vars.length; i++) {
+                    var pair = vars[i].split('=');
+                    if (decodeURIComponent(pair[0]) == variable) {
+                        return decodeURIComponent(pair[1]);
+                    }
+                }
+            }   
+            
+            // set variable for the smartWedContAddr to have some value
+            // 
+            function setWedContAddr() {
+                
+                smartWedContAddr = getQueryVariable('smartWedAddress');
+                if (smartWedContAddr != null) {
+                    // alert(smartWedContAddr);
+                } else {
+                    smartWedContAddr = '0xd09B6E3C8FB7E05e248197EC45c38cD338d66C1a';
+                }
+            }
+
+            // set wedding date passed from smartwedindex contract
+            function setIndexWeddingDate() {
+                
+                indexWeddingDate = getQueryVariable('indexWedDate');
+                if (indexWeddingDate != null) {
+                    indexWeddingDate = moment(getQueryVariable('indexWedDate'),"X").format("DD MMM YYYY");
+                } else {
+                    indexWeddingDate = "not indexed";
+                }
+                $('#lblIndexWedDate').html(indexWeddingDate);
+                // alert(indexWeddingDate);
+            }
+
+
 
             function connectionInit() {
                 // connect direct to infura - needs to change to metamask when guestbook entry is created
@@ -37,7 +79,8 @@
                 
                 // contract addresses are hardcoded for now, uncomment one
                 // hax & luker contract address
-                myContractInstance = MyContract.at("0xd09B6E3C8FB7E05e248197EC45c38cD338d66C1a");
+                // myContractInstance = MyContract.at("0xd09B6E3C8FB7E05e248197EC45c38cD338d66C1a");
+                myContractInstance = MyContract.at(smartWedContAddr);
                 
                 // garrett & stephanie contract address
                 //var myContractInstance = MyContract.at("0x958a8f594101d2c0485a52319f29b2647f2ebc06");
@@ -120,10 +163,13 @@
             }
 
             function bodyOnLoad() {
+                setWedContAddr();
                 // Code running here will be unable to access important blockchain stuff
                 connectionInit();
+                // indexInit();
                 etherscanAPIParse();
                 loadPartners();
+                setIndexWeddingDate();
                 printMultisigUrl();
                 printMultisigBalance();
                 guestbook();
@@ -145,6 +191,11 @@
                     });
             }
 
+
+
+
+
+
         </script>
         
 
@@ -163,7 +214,11 @@
                         <ul>
                             <li class="current_page_item"><a href="#" accesskey="1" title="">Homepage</a></li>
                             <li><a href="https://wallet.gnosis.pm" accesskey="2" title="" target="new">Access Multisig</a></li>
+                            <!--
                             <li><a href="#" accesskey="3" title="">Sign Guestbook</a></li>
+                            -->
+                            <li><a href="file:///Users/hax/Documents/Solidity%20Projects/marriage%20interface/index-button-test.html">Choose Contract</a>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -179,7 +234,8 @@
                         <span class="byline"><br><label id="lblVows"></label></span>
                         <!-- incept date temporary usage of contract marriageDate until etherscan API data can be parsed -->
                         <p><br />
-                            Wedding Date - <label id="lblInceptText"></label><br />    
+                            Wedding Date - <label id="lblIndexWedDate"></label><br />    
+                            Contract Deployed - <label id="lblInceptText"></label><br />    
                             Contract Finalized - <label id="lblContractAcceptDate"></label><br />
                             Marriage Validity Confirmed <label id="lblConfs"></label> Times.
                         </p>
