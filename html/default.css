@@ -64,7 +64,7 @@
 	
 	.container
 	{
-		overflow: hidden;
+		/* overflow: hidden; */
 		margin: 0em auto;
 		width: 1000px;
 	}
@@ -316,6 +316,7 @@
 	{
 		position: relative;
 		padding: 1.5em 0em;
+		z-index: 1;
 	}
 
 /*********************************************************************************/
