@@ -156,11 +156,11 @@ function indexInit() {
                 //var myContractInstance = MyContract.at("0x958a8f594101d2c0485a52319f29b2647f2ebc06");
 
                 // gather values for partner1, partner2, vows, owner
-                partner1 = myContractInstance .partner1.call();
-                partner2 = myContractInstance .partner2.call();
-                vows = myContractInstance .vows.call();
-                owner = myContractInstance .owner.call();
-                marriageDate = myContractInstance .marriageDate.call();
+                partner1 = myContractInstance.partner1.call();
+                partner2 = myContractInstance.partner2.call();
+                vows = myContractInstance.vows.call();
+                owner = myContractInstance.owner.call();
+                marriageDate = myContractInstance.marriageDate.call();
             }
  
 
@@ -231,6 +231,10 @@ function indexInit() {
                 var acctBalance = getAccountBalance();
                 $('#lblPrintAcctBal').html(acctBalance);
             }
+            function printGuestbookUrl() {
+                var guestbookUrl = '<a href="https://bowensanders.github.io/meta-test.html?smartWedAddress=' + smartWedContAddr +'"class="button">Sign the Guestbook</a>';
+                $('#lblPrintGuestbookUrl').html(guestbookUrl);
+            }
 
             function bodyOnLoad() {
                 setWedContAddr();
@@ -243,12 +247,13 @@ function indexInit() {
                 printMultisigUrl();
                 printMultisigBalance();
                 guestbook();
+                printGuestbookUrl();
                 // Put the second function here
             }
 
             // code to parse data from etherscan api for first transaction datestamp (wedding date) and confirmations
             function etherscanAPIParse() {
-                var address2 = '0xd09B6E3C8FB7E05e248197EC45c38cD338d66C1a';
+                var address2 = smartWedContAddr;
                 $.getJSON('https://api.etherscan.io/api?module=account&action=txlist&address=' + address2 + '&sort=asc&page=1&offset=1&apikey=8VII5WKFAB7FXWFUGI9HAMK6Z6DMYXAZNJ', function(data) {    
                     var inceptDate = moment(data.result[0].timeStamp,"X").format("DD MMM YYYY");
                     var contractAcceptDate = moment(marriageDate,"X").format("DD MMM YYYY");
@@ -340,7 +345,12 @@ function indexInit() {
                         </p>
                 </div>
                     <ul class="actions">
-                        <li><a href="#" class="button">Sign the Guestbook</a></li>
+                        <li>
+                                <label id="lblPrintGuestbookUrl"></label>
+                            <!--
+                            <a href="#" class="button">Sign the Guestbook</a>
+                            -->
+                        </li>
                     </ul>
             </div>
                 
@@ -349,7 +359,7 @@ function indexInit() {
             <div id="footer">
                 <div class="container">
                     <div class="title">
-                        <p>This is a <a href="https://giveth.io" target="new">Giveth</a> Social Coding Project, Interface by <a href="https://github.com/bowensanders/" target="new">Bowen Sanders</a> with help from <a href="https://github.com/craigkc/" target="new">Craig Scheets</a></a>.<br>The first instance of this Smart Marriage contract was coded by <a href="https://github.com/jbaylina" target="new">Jordi Baylina</a> and  
+                        <p>SmartWed is a <a href="https://giveth.io" target="new">Giveth</a> Social Coding Project, Interface by <a href="https://github.com/bowensanders/" target="new">Bowen Sanders</a> with help from <a href="https://github.com/craigkc/" target="new">Craig Scheets</a></a>.<br>The first instance of this Smart Marriage contract was coded by <a href="https://github.com/jbaylina" target="new">Jordi Baylina</a> and  
                             <!-- this creates a link to the contract being examined from the myContractInstance array -->
                             <a href="https://etherscan.io/address/0xd09B6E3C8FB7E05e248197EC45c38cD338d66C1a" target="new"> deployed to the Ethereum Blockchain</a> at Burning Man 2017. <br>The contract was based on the first Ethereum Marriage Contract by <a href="https://github.com/Souptacular" target="new">Hudson Jameson</a>.<br>Theme based on <strong>PlainDisplay</strong>, a free, fully standards-compliant CSS template designed by <a href="http://templated.co" rel="nofollow">TEMPLATED</a>. </p>
                     </div>

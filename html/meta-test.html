@@ -1,0 +1,192 @@
+<html>
+  <head>
+     <title>SmartWed Guestbook</title>
+  
+        <meta name="keywords" content="" />
+        <meta name="description" content="" />
+        <link href="https://fonts.googleapis.com/css?family=Varela" rel="stylesheet" />
+        <link href="./default.css" rel="stylesheet" type="text/css" media="all" />
+        <link href="./fonts.css" rel="stylesheet" type="text/css" media="all" />
+
+        <!-- include moment - consider making a copy of this into the repo -->
+        <script src="https://momentjs.com/downloads/moment.min.js"></script>
+
+        <!-- include jQuery - because it looks easier than jumping into angular or react quite yet -->
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+<script>
+      //
+      // begin Guestbook Functions
+      //
+      // Guestbook variable setup
+      var smartWedContAddress;
+  
+      // get query variable
+      function getQueryVariable(variable) {
+          var query = window.location.search.substring(1);
+          var vars = query.split('&');
+          for (var i=0; i<vars.length; i++) {
+              var pair = vars[i].split('=');
+              if (decodeURIComponent(pair[0]) == variable) {
+                  return decodeURIComponent(pair[1]);
+              }
+          }
+      } 
+  
+      // taken from smartwed page to get address of target contract
+      function setWedContAddr() {
+          smartWedContAddr = getQueryVariable('smartWedAddress');
+          if (smartWedContAddr != null) {
+               // alert(smartWedContAddr);
+          } else {
+              // smartWedContAddr = '0xd09B6E3C8FB7E05e248197EC45c38cD338d66C1a';
+              alert(error);
+              // rinkeby test contract 
+              // smartWedContAddr = '0x16A594158D24E225c6c11f916E518025b75b0B5C';
+          }
+          // alert(smartWedContAddr);
+      }
+  
+      // MetaMask injects the web3 library for us.
+      window.onload = function() {
+        if (typeof web3 === 'undefined') {
+          document.getElementById('meta-mask-required').innerHTML = 'You need <a href="https://metamask.io/">MetaMask</a> browser plugin to run this example'
+        }
+        setWedContAddr();
+      }
+  
+      // function to send the transaction on button press
+      function send() {
+        web3.eth.sendTransaction({
+          from: web3.eth.coinbase,
+          to: smartWedContAddr,
+          value: web3.toWei(document.getElementById("amount").value, 'ether')
+        }, function(error, result) {
+          if (!error) {
+            document.getElementById('response').innerHTML = 'Success: <a href="https://etherscan.io/tx/' + result + '"> View Transaction </a>'
+          } else {
+            document.getElementById('response').innerHTML = '<pre>' + error + '</pre>'
+          }
+        })
+      }
+  
+      function printBackUrl() {
+          var backUrl = '<a href="https://bowensanders.github.io/index.html?smartWedAddress=' + smartWedContAddr +'"class="button">Go Back</a>';
+          $('#lblPrintBackUrl').html(backUrl);
+      }
+
+      function writeGuestbook(){
+          messageFrom = document.getElementById("msgFrom").value;
+          messageTxt = document.getElementById("msgTxt").value;
+          messageUrl = document.getElementById("msgUrl").value;
+          //alert(messageTxt);
+          MyContract = web3.eth.contract([{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"messages","outputs":[{"name":"date","type":"uint256"},{"name":"nameFrom","type":"string"},{"name":"text","type":"string"},{"name":"url","type":"string"},{"name":"value","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"nameFrom","type":"string"},{"name":"text","type":"string"},{"name":"url","type":"string"}],"name":"sendMessage","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"constant":true,"inputs":[],"name":"marriageDate","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"majorEvents","outputs":[{"name":"date","type":"uint256"},{"name":"name","type":"string"},{"name":"description","type":"string"},{"name":"url","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"name","type":"string"},{"name":"description","type":"string"},{"name":"url","type":"string"}],"name":"setMajorEvent","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"acceptOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"partner2","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"partner1","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_newOwner","type":"address"}],"name":"changeOwner","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_dst","type":"address"},{"name":"_value","type":"uint256"},{"name":"_data","type":"bytes"}],"name":"execute","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"status","type":"string"},{"name":"url","type":"string"}],"name":"setStatus","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"vows","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"marriageStatus","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"newOwner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"numberOfMajorEvents","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_partner1","type":"string"},{"name":"_partner2","type":"string"},{"name":"_vows","type":"string"},{"name":"url","type":"string"}],"name":"createMarriage","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"numberOfMessages","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[{"name":"_owner","type":"address"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"name","type":"string"},{"indexed":false,"name":"description","type":"string"},{"indexed":false,"name":"url","type":"string"}],"name":"MajorEvent","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"name","type":"string"},{"indexed":false,"name":"description","type":"string"},{"indexed":false,"name":"url","type":"string"},{"indexed":false,"name":"value","type":"uint256"}],"name":"MessageSent","type":"event"}]);
+          myContractInstance = MyContract.at(smartWedContAddr);
+          myContractInstance.sendMessage(messageFrom, messageTxt, messageUrl, function(error, result) {
+          if (!error) {
+            document.getElementById('response').innerHTML = 'Success: <a href="https://etherscan.io/tx/' + result + '" target="new"> View Transaction </a>'
+          } else {
+            document.getElementById('response').innerHTML = '<pre>' + error + '</pre>'
+          }
+        })
+        
+      }
+      // 
+      // end Guestbook 
+      //
+
+      function bodyOnLoad() {
+        setWedContAddr();
+        printBackUrl();
+      }
+    </script>
+  
+  </head>
+  <body onload="bodyOnLoad()">
+
+      <div id="wrapper">
+          <!-- Nav Section -->
+          <div id="header-wrapper">
+              <div id="header" class="container">
+                  <div id="logo">
+                      <h1><a href="index.html"><img src="ethmarriage-logo.png" height="40" width="40" align="top"> SmartWed</a></h1>
+                  </div>
+                  <div id="menu">
+                      <ul>
+                          <li class="current_page_item"><a href="index.html" accesskey="1" title="">Homepage</a></li>
+                          <li><a href="https://wallet.gnosis.pm" accesskey="2" title="" target="new">Access Multisig</a></li>
+                          <!--
+                          <li><a href="#" accesskey="3" title="">Sign Guestbook</a></li>
+                          
+                          <li><a href="index-button-test.html">Choose Contract</a>
+                          
+                          <li><div id="buttonIndex"></div></li>
+
+                          -->
+                          </li>
+                      </ul>
+                  </div>
+              </div>
+          </div> 
+
+        <!-- guestbook form Section -->
+        <div id="meta-mask-required">
+        <div id="page" class="container">
+            <div class="title">
+                <h2>Sign the Guestbook:</h2>
+            </div>    
+                <span class="byline">
+                    <label>From:<br>
+                      <input type="text" id="msgFrom"></input>
+                    </label>
+                  <br>
+                    <label>Message:<br>
+                      <input type="text" id="msgTxt"></input>
+                    </label>
+                  <br>
+                    <label>URL:<br>
+                      <input type="text" id="msgUrl"></input>
+                    </label>
+                  <br>
+                    <a href="#" class="button" onclick="writeGuestbook()">Write To Guestbook</a>
+                  <div id="response"></div>
+                    
+                </span> 
+                               
+    </div>
+ 
+    </div>
+
+    <!-- instructions Section -->
+    <div id="featured">
+        <div class="container">
+            <div class="title">
+                
+                <span class="byline">
+                    To sign the Guestbook, please use the form above, and click<br>
+                    the 'Write to Guestbook' button.<br>
+                    In order to send a donation to the couple's Multisig Wallet,<br>
+                    just add an ETH amount in the Metamask confirmation window.
+                </span>
+            </div>        
+                    <ul class="actions">
+                        <li>
+                          <label id="lblPrintBackUrl"></label>
+                        </li>
+                    </ul>
+            
+         </div>   
+    </div>
+
+    <div id="footer">
+        <div class="container">
+            <div class="title">
+                <p>SmartWed is a <a href="https://giveth.io" target="new">Giveth</a> Social Coding Project, Interface by <a href="https://github.com/bowensanders/" target="new">Bowen Sanders</a> with help from <a href="https://github.com/craigkc/" target="new">Craig Scheets</a></a>.<br>The first instance of this Smart Marriage contract was coded by <a href="https://github.com/jbaylina" target="new">Jordi Baylina</a> and  
+                    <!-- this creates a link to the contract being examined from the myContractInstance array -->
+                    <a href="https://etherscan.io/address/0xd09B6E3C8FB7E05e248197EC45c38cD338d66C1a" target="new"> deployed to the Ethereum Blockchain</a> at Burning Man 2017. <br>The contract was based on the first Ethereum Marriage Contract by <a href="https://github.com/Souptacular" target="new">Hudson Jameson</a>.<br>Theme based on <strong>PlainDisplay</strong>, a free, fully standards-compliant CSS template designed by <a href="http://templated.co" rel="nofollow">TEMPLATED</a>. </p>
+            </div>
+        </div>
+    </div>
+  
+  </body>
+</html>
